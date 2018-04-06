@@ -8,33 +8,40 @@ import { Provider } from 'react-redux'; // destructuring
 // import redux from 'redux';
 // const createStore = redux.createStore; 
 
+// All reducers bundled up, and *each* is hit every time an action occurs, stored in our store:
 // default params to avoid undefined error
 const firstReducer = (state = 0, action) => {
     if (action.type == "BUTTON_ONE") {
         console.log(state);
         console.log('first reducer');
+        return state + 1;
     }
     // Interesting: state refers to whatever this reducer returned the last time it was called!
-    return state + 1;
+    return state;
 }
 
-const secondReducer = (state, action) => {
+const secondReducer = (state=1000, action) => {
     if (action.type == "BUTTON_TWO") {
         console.log('second reducer');
+        return state - 1;
     }
-    return 2;
+    return state;
 }
 
-const thirdReducer = (state, action) => {
+const thirdReducer = (state = [], action) => {
     console.log(action);
 
-    if (action.type == 'ADD_ELEMENT') {
-        console.log(`the element was ${action.payload}`);
+    switch (action.type) {
+        case 'ADD_ELEMENT':
+            // No! use spread! Immutability!
+            // state.push(action.payload);
+            return [...state, action.payload];
+        default:
+            return state;
     }
-    return 2;
-
 }
 
+// this store is updated by reducers, and it controls every state, which control the DOM:
 const storeInstance = createStore(
     // A reducer is a function that runs every time an action is dispatched:
     combineReducers({

@@ -18,10 +18,14 @@ class App extends Component {
         </p>
         <Form />
 
+        <br/>
+        <pre> {JSON.stringify(this.props.reduxState)} </pre>
       </div>
     );
   }
 }
 
+const mapReduxStateToProps = reduxState => ({ reduxState });
+
 // currying:
-export default connect()(App);
+export default connect(mapReduxStateToProps)(App);
